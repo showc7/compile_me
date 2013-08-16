@@ -41,6 +41,7 @@ double <name> ()
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
 char str_MAIN_FOLDER [] = "program/";
 
@@ -53,7 +54,7 @@ char str_SOURCES [] = "SOURCES=";
 char str_OBJECTS [] = "OBJECTS=$(SOURCES:.cpp=.o)";
 char str_EXECUTABLE [] = "EXECUTABLE=prg";
 char str_all [] = "all: $(SOURCES) $(EXECUTABLE)";
-char str_EXECUTABLE_TO_OBJECTS [] = "$(EXECUTABLE): $(OBJECTS)\n\t@$(CC) $(LDFLAGS) $(OBJECTS) -o $@\n\t@echo \"LD \"$(OBJECTS) -o";
+char str_EXECUTABLE_TO_OBJECTS [] = "$(EXECUTABLE): $(OBJECTS)\n\t@$(CC) $(LDFLAGS) $(OBJECTS) -o $@\n\t@echo \"LD \"$(OBJECTS) -o $EXECUTABLE";
 char str_CPP_O [] = ".cpp.o:";
 char str_CPP_TO_O [] = "\t@$(CC) $(CFLAGS) $< -o $@\n\t@echo \"CC \" $<";
 
@@ -94,7 +95,7 @@ void itoa(int n, char s[])
 
 void CreateMakeFile(int count)
 {
-	FILE * fp = fopen("makefile","w");
+	FILE * fp = fopen("program/makefile","w");
 	
 	if(fp == NULL)
 		return;
@@ -107,7 +108,7 @@ void CreateMakeFile(int count)
 	char path [100];
 	char buffer [100];
 	
-	fprintf(fp,"\tprogram/main.cpp\\\n");
+	fprintf(fp,"\tmain.cpp\\\n");
 	
 	int i = 0;
 	
@@ -119,7 +120,7 @@ void CreateMakeFile(int count)
 		itoa(i,buffer);
 		strcat(buffer,".cpp");
 		
-		fprintf(fp,"\tprogram/%s\\\n",buffer);
+		fprintf(fp,"\t%s\\\n",buffer);
 	}
 	
 	memset(path,0,sizeof(char) * 100);
@@ -128,7 +129,7 @@ void CreateMakeFile(int count)
 	itoa(i,buffer);
 	strcat(buffer,".cpp");
 		
-	fprintf(fp,"\tprogram/%s\n",buffer);
+	fprintf(fp,"\t%s\n",buffer);
 	
 	fprintf(fp,"%s\n",str_OBJECTS);
 	fprintf(fp,"%s\n\n",str_EXECUTABLE);
@@ -211,6 +212,12 @@ int main(int argc, char ** argv)
 	{
 		count = atoi(argv[1]);
 	}
+
+	char dir [100];
+	
+	strcpy(dir,"program");
+	
+	mkdir(dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
 	char path [100];
 	char buffer [100];
