@@ -54,7 +54,7 @@ char str_SOURCES [] = "SOURCES=";
 char str_OBJECTS [] = "OBJECTS=$(SOURCES:.cpp=.o)";
 char str_EXECUTABLE [] = "EXECUTABLE=prg";
 char str_all [] = "all: $(SOURCES) $(EXECUTABLE)";
-char str_EXECUTABLE_TO_OBJECTS [] = "$(EXECUTABLE): $(OBJECTS)\n\t@$(CC) $(LDFLAGS) $(OBJECTS) -o $@\n\t@echo \"LD \"$(OBJECTS) -o $EXECUTABLE";
+char str_EXECUTABLE_TO_OBJECTS [] = "$(EXECUTABLE): $(OBJECTS)\n\t@$(CC) $(LDFLAGS) $(OBJECTS) -o $@\n\t@echo \"LD \"$(OBJECTS) -o $(EXECUTABLE)";
 char str_CPP_O [] = ".cpp.o:";
 char str_CPP_TO_O [] = "\t@$(CC) $(CFLAGS) $< -o $@\n\t@echo \"CC \" $<";
 
